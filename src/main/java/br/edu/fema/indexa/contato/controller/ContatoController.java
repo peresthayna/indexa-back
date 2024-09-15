@@ -37,8 +37,8 @@ public class ContatoController {
     }
 
     @PostMapping
-    public ContatoCadastroDTO save(@RequestBody ContatoCadastroDTO contatoCadastroDTO) {
-        return new ContatoCadastroDTO(contatoService.save(new Contato(contatoCadastroDTO)));
+    public ContatoConsultaDTO save(@RequestBody ContatoCadastroDTO contatoCadastroDTO) {
+        return new ContatoConsultaDTO(contatoService.save(new Contato(contatoCadastroDTO)));
     }
 
     @PutMapping("/{id}")
