@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(path = "contato")
 public class ContatoController {
@@ -46,7 +47,7 @@ public class ContatoController {
         return new ContatoConsultaDTO(contatoService.update(new Contato(contato), id));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         contatoService.delete(id);
         return ResponseEntity.ok().build();

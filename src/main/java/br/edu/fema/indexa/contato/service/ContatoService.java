@@ -49,18 +49,11 @@ public class ContatoService {
     }
 
     public Contato save(Contato contato) {
-        if(contato.getNome() == null || contato.getNome().isEmpty()) {
-            throw new RuntimeException("Nome precisa ser informado");
-        } if(contato.getTelefone() == null || contato.getTelefone().isEmpty()) {
-            throw new RuntimeException("Telefone precisa ser informado");
-        } if(contatoRepository.findByTelefone(contato.getTelefone()).isPresent()) {
+        this.validarCampos(contato);
+        if(contatoRepository.findByTelefone(contato.getTelefone()).isPresent()) {
             throw new RuntimeException("Este telefone já foi cadastrado");
         } if(contatoRepository.findByEmail(contato.getEmail()).isPresent()) {
             throw new RuntimeException("Este email já foi cadastrado");
-        } if(contato.getEmail() == null || contato.getEmail().isEmpty()) {
-            throw new RuntimeException("Email precisa ser informado");
-        } if(!ContatoService.validate(contato.getEmail())) {
-            throw new IllegalArgumentException("Email invalido");
         }
         return contatoRepository.save(contato);
     }
@@ -69,7 +62,8 @@ public class ContatoService {
         if(id != null || contatoRepository.findById(id).isPresent()) {
             contato.setId(id);
         }
-        return save(contato);
+        this.validarCampos(contato);
+        return contatoRepository.save(contato);
     }
 
     public void delete(Long id) {
@@ -81,5 +75,17 @@ public class ContatoService {
 
     public static boolean validate(String emailStr) {
         return VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr).find();
+    }
+
+    public void validarCampos(Contato contato) {
+        if(contato.getNome() == null || contato.getNome().isEmpty()) {
+            throw new RuntimeException("Nome precisa ser informado");
+        } if(contato.getTelefone() == null || contato.getTelefone().isEmpty()) {
+            throw new RuntimeException("Telefone precisa ser informado");
+        } if(contato.getEmail() == null || contato.getEmail().isEmpty()) {
+            throw new RuntimeException("Email precisa ser informado");
+        } if(!ContatoService.validate(contato.getEmail())) {
+            throw new IllegalArgumentException("Email invalido");
+        }
     }
 }
